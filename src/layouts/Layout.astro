@@ -1,0 +1,75 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+}
+
+const {
+  title = 'JNTUNED — Reprogramación de ECUs & Performance Automotriz Temuco',
+  description = 'Especialistas en seteo de ECUs FuelTech, RaceTec y Tactrix. Engine Swaps, diagnóstico computarizado y potenciación en Temuco, Chile. Ingeniería aplicada a tu motor.',
+  canonical = 'https://jntuned.cl',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es-CL" class="dark scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+
+    <!-- SEO Local -->
+    <meta name="geo.region" content="CL-AR" />
+    <meta name="geo.placename" content="Temuco, Araucanía, Chile" />
+    <meta name="keywords" content="reprogramación ECU Temuco, FuelTech Chile, RaceTec Temuco, engine swap Temuco, diagnóstico automotriz Temuco, performance automotriz Chile, JNTUNED" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="es_CL" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Google Fonts: Inter + Roboto Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- JSON-LD: Local Business -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "AutoRepair",
+        "name": "JNTUNED",
+        "description": "Reprogramación de ECUs, Engine Swaps y Electrónica Automotriz avanzada en Temuco, Chile.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Temuco",
+          "addressRegion": "Araucanía",
+          "addressCountry": "CL"
+        },
+        "url": "https://jntuned.cl",
+        "priceRange": "$$"
+      }
+    </script>
+
+    <title>{title}</title>
+  </head>
+
+  <body class="bg-surface text-slate-200 font-sans antialiased selection:bg-electric/30 selection:text-white">
+    <slot />
+  </body>
+</html>

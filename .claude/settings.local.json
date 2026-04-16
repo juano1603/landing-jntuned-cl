@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:brandfetch.com)",
+      "WebFetch(domain:tunernerd.com)",
+      "WebFetch(domain:www.fueltech.net)",
+      "WebFetch(domain:www.hptuners.com)",
+      "WebFetch(domain:www.tactrix.com)",
+      "Bash(curl -sL \"https://www.fueltech.net/cdn/shop/files/logo_a1eef4a6-16db-44ec-89bf-f9762ed54036_205x@2x.png?v=1613683606\" -o fueltech.png)",
+      "Bash(curl -sL \"https://www.hptuners.com/wp-content/uploads/2021/12/cropped-HPT-2x-e1638392357962.png\" -o hptuners.png)",
+      "Bash(curl -sL \"https://tunernerd.com/cdn/shop/files/logo_Large_Custom.png?v=1677701248&width=500\" -o tunernerd.png)",
+      "WebFetch(domain:www.tactrix.eu)",
+      "WebFetch(domain:racetecfuel.com)",
+      "WebFetch(domain:racetec.com.ar)",
+      "WebFetch(domain:chiptuningshop.com)",
+      "Bash(curl -sL \"https://racetec.com.ar/images/header_logo.png\" -o racetec.png)",
+      "Bash(curl -sL \"https://chiptuningshop.com/wp-content/uploads/2014/04/Tactrix_Openport2-700x525.jpg\" -o tactrix.png)",
+      "WebFetch(domain:www.instagram.com)",
+      "Bash(gh auth *)"
+    ]
+  }
+}
