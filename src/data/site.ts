@@ -1,6 +1,6 @@
 export const SITE = {
   name: 'JNTUNED',
-  url: 'https://www.jntuned.cl',
+  url: 'https://jntuned.cl',
   title: 'JNTUNED | Reprogramación de ECU y Engine Swaps en Temuco',
   description:
     'Reprogramación de ECU, seteo FuelTech y RaceTec, engine swaps y diagnóstico con datalog en Temuco, Chile. Mira nuestros builds y cotiza por WhatsApp.',

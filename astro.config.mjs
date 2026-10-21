@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   integrations: [tailwind(), sitemap()],
-  site: 'https://www.jntuned.cl',
+  site: 'https://jntuned.cl',
   compressHTML: true,
   build: {
     inlineStylesheets: 'auto',
