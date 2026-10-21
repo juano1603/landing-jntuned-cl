@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jntuned.cl/sitemap-index.xml

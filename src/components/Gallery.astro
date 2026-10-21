@@ -1,0 +1,117 @@
+---
+import { Image, getImage } from 'astro:assets';
+import { trabajos } from '../data/trabajos';
+import { foto } from '../lib/images';
+
+const items = await Promise.all(
+  trabajos.map(async t => {
+    const alt = `${t.titulo}${t.detalle ? ` — ${t.detalle}` : ''} | Trabajo JNTUNED Temuco`;
+    if (t.video) {
+      return { ...t, alt, img: undefined, full: `/videos/${t.video}.mp4`, poster: `/videos/${t.video}.jpg` };
+    }
+    const img = foto(t.foto)!;
+    const full = await getImage({ src: img, width: Math.min(img.width, 1800), format: 'webp' });
+    return { ...t, alt, img, full: full.src, poster: undefined };
+  }),
+);
+---
+
+<div class="grid grid-flow-row-dense auto-rows-[180px] grid-cols-2 gap-2 sm:auto-rows-[240px] lg:grid-cols-4">
+  {items.map(t => (
+    <button
+      type="button"
+      class:list={[
+        'gallery-item group relative overflow-hidden bg-ink-100 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-electric-light',
+        t.grande && 'col-span-2 row-span-2',
+      ]}
+      data-full={t.full}
+      data-alt={t.alt}
+      data-type={t.video ? 'video' : 'foto'}
+      aria-label={`Ampliar ${t.video ? 'video' : 'foto'}: ${t.titulo}`}
+    >
+      {t.img ? (
+        <Image
+          src={t.img}
+          widths={t.grande ? [600, 1000, 1400] : [400, 700]}
+          sizes={t.grande ? '(min-width: 1024px) 50vw, 100vw' : '(min-width: 1024px) 25vw, 50vw'}
+          alt={t.alt}
+          style={t.encuadre ? `object-position: ${t.encuadre}` : undefined}
+          class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+      ) : (
+        <>
+          <video
+            class="gallery-video h-full w-full object-cover"
+            src={t.full}
+            poster={t.poster}
+            muted
+            loop
+            playsinline
+            preload="none"
+            aria-label={t.alt}
+          />
+          <span class="absolute right-3 top-3 flex items-center gap-1.5 bg-ink/80 px-2 py-1 font-display text-xs font-semibold uppercase tracking-wider text-white" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l15 8-15 8z" /></svg>Video
+          </span>
+        </>
+      )}
+      <div class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-ink/90 via-transparent to-transparent p-4 opacity-100 transition-opacity duration-300 lg:opacity-0 lg:group-hover:opacity-100">
+        <span class="font-display text-lg font-bold uppercase leading-tight text-white sm:text-xl">{t.titulo}</span>
+        {t.detalle && <span class="text-xs uppercase tracking-wider text-electric-bright">{t.detalle}</span>}
+      </div>
+    </button>
+  ))}
+</div>
+
+<dialog id="lightbox" class="m-auto max-h-none max-w-none bg-transparent p-0 backdrop:bg-black/90">
+  <figure class="relative flex max-h-[90vh] max-w-[94vw] flex-col items-center">
+    <img id="lightbox-img" alt="" class="hidden max-h-[84vh] max-w-[94vw] object-contain" />
+    <video id="lightbox-video" class="hidden max-h-[84vh] max-w-[94vw]" controls playsinline loop></video>
+    <figcaption id="lightbox-cap" class="mt-3 text-center font-display text-lg uppercase tracking-wider text-slate-200"></figcaption>
+  </figure>
+  <button id="lightbox-close" class="fixed right-4 top-4 flex h-11 w-11 items-center justify-center text-white" aria-label="Cerrar">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  </button>
+</dialog>
+
+<script>
+  const dialog = document.getElementById('lightbox') as HTMLDialogElement;
+  const img = document.getElementById('lightbox-img') as HTMLImageElement;
+  const video = document.getElementById('lightbox-video') as HTMLVideoElement;
+  const cap = document.getElementById('lightbox-cap') as HTMLElement;
+
+  document.querySelectorAll<HTMLButtonElement>('.gallery-item').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const isVideo = btn.dataset.type === 'video';
+      img.classList.toggle('hidden', isVideo);
+      video.classList.toggle('hidden', !isVideo);
+      if (isVideo) {
+        video.src = btn.dataset.full!;
+        video.play().catch(() => {});
+      } else {
+        img.src = btn.dataset.full!;
+        img.alt = btn.dataset.alt!;
+      }
+      cap.textContent = btn.dataset.alt!.split(' | ')[0];
+      dialog.showModal();
+    });
+  });
+
+  const close = () => dialog.close();
+  dialog.addEventListener('close', () => { video.pause(); video.removeAttribute('src'); video.load(); });
+  document.getElementById('lightbox-close')!.addEventListener('click', close);
+  dialog.addEventListener('click', e => { if (e.target === dialog) close(); });
+
+  // Los videos de la grilla solo se reproducen cuando están en pantalla
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const v = entry.target as HTMLVideoElement;
+      if (entry.isIntersecting && !reduceMotion) v.play().catch(() => {});
+      else v.pause();
+    });
+  }, { threshold: 0.4 });
+  document.querySelectorAll<HTMLVideoElement>('.gallery-video').forEach(v => io.observe(v));
+</script>
