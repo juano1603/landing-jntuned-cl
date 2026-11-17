@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Nissan Primera P11 de JNTUNED en pista de drag" }],
   },
   twitter: { card: "summary_large_image", title: negocio.titulo, description: negocio.descripcion, images: ["/og-image.jpg"] },
-  icons: { icon: "/favicon.svg", apple: "/apple-touch-icon.png" },
+  icons: { icon: "/icono-logo.png", apple: "/apple-touch-icon-logo.png" },
   other: {
     "geo.region": "CL-AR",
     "geo.placename": "Temuco",

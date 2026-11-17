@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   // público no ofrece "instalar" a los clientes.
   manifest: "/admin-app/manifest.webmanifest",
   appleWebApp: { capable: true, title: "JNTUNED Panel", statusBarStyle: "black-translucent" },
-  icons: { apple: "/admin-app/apple-touch.png" },
+  icons: { apple: "/admin-app/apple-touch-logo.png" },
 };
 
 export const viewport: Viewport = {

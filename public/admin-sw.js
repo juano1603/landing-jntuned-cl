@@ -4,9 +4,9 @@
  * No guarda en caché las páginas del panel (tienen sesión y datos en vivo):
  * solo los archivos estáticos con hash de Next y una pantalla "sin conexión".
  */
-const VERSION = "panel-v1";
+const VERSION = "panel-v2";
 const SIN_CONEXION = "/admin-app/sin-conexion.html";
-const PRECARGA = [SIN_CONEXION, "/admin-app/icono-192.png"];
+const PRECARGA = [SIN_CONEXION, "/admin-app/icono-logo-192.png"];
 
 self.addEventListener("install", (evento) => {
   evento.waitUntil(caches.open(VERSION).then((c) => c.addAll(PRECARGA)));
