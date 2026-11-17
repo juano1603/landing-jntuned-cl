@@ -1,0 +1,143 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* ---------------------------------------------------------------------
+   * Identidad JNTUNED: casi negro, gris carbón y azul eléctrico como acento
+   * (estilo HPTuners). Blanco sobre #2563eb cumple AA (5.2:1).
+   * ------------------------------------------------------------------ */
+  --color-brand: #2563eb;
+  --color-brand-light: #3b82f6;
+  --color-brand-bright: #60a5fa;
+  --color-brand-deep: #1d4ed8;
+
+  --color-ink: #07090d;
+  --color-carbon: #0d1117;
+  --color-graphite: #151a22;
+  --color-steel: #232a36;
+  --color-hairline: rgb(255 255 255 / 0.1);
+  --color-texto: #f1f5f9;
+  --color-suave: #94a3b8;
+
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-barlow);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Tokens semánticos de shadcn */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* El sitio es oscuro por identidad de marca, no por preferencia del sistema. */
+:root {
+  color-scheme: dark;
+  --background: #07090d;
+  --foreground: #f1f5f9;
+  --card: #151a22;
+  --card-foreground: #f1f5f9;
+  --popover: #151a22;
+  --popover-foreground: #f1f5f9;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #232a36;
+  --secondary-foreground: #f1f5f9;
+  --muted: #232a36;
+  --muted-foreground: #94a3b8;
+  --accent: #232a36;
+  --accent-foreground: #f1f5f9;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: rgb(255 255 255 / 0.1);
+  --input: rgb(255 255 255 / 0.14);
+  --ring: #3b82f6;
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-ink text-slate-300 antialiased;
+    /* `clip` (no `hidden`) para no romper position: sticky. */
+    overflow-x: clip;
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-light;
+  }
+
+  ::selection {
+    @apply bg-brand/40 text-white;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Antetítulo de sección: rayita azul + texto espaciado. */
+  .eyebrow {
+    @apply font-display text-brand-bright inline-flex items-center gap-3 text-sm font-semibold tracking-[0.3em] uppercase;
+  }
+  .eyebrow::before {
+    content: "";
+    @apply bg-brand-light h-0.5 w-8;
+  }
+
+  .section-title {
+    @apply font-display text-4xl leading-none font-bold text-white uppercase sm:text-6xl;
+  }
+
+  .section-shell {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Botones de la landing (rectos, condensados, como HPTuners). */
+  .btn-primario {
+    @apply font-display bg-brand hover:bg-brand-light inline-flex items-center justify-center gap-2 px-7 py-3.5 text-lg font-bold tracking-wider text-white uppercase transition-colors;
+  }
+  .btn-secundario {
+    @apply font-display hover:text-ink inline-flex items-center justify-center gap-2 border border-white/30 px-7 py-3.5 text-lg font-bold tracking-wider text-white uppercase transition-colors hover:border-white hover:bg-white;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 4rem;
+}

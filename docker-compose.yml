@@ -1,0 +1,17 @@
+# Postgres local para desarrollo. En producción se usa Neon (ver .env.example).
+# Puerto 5439: 5432 es un PostgreSQL nativo y 5434–5438 son de otros proyectos.
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: jntuned-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: jntuned
+      POSTGRES_PASSWORD: jntuned
+      POSTGRES_DB: jntuned
+    ports:
+      - "5439:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:

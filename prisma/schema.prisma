@@ -1,0 +1,86 @@
+// Prisma 7: el generador `prisma-client` emite el cliente en `generated/`,
+// desde donde se importa (ver `lib/db.ts`). Las URLs de conexión viven en
+// `prisma.config.ts`.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// --- Tienda ------------------------------------------------------------------
+
+enum CategoriaProducto {
+  ECU_FUELTECH
+  MODULO_FUELTECH
+  WIDEBAND
+  WASTEGATE
+  TURBO
+  OTRO
+}
+
+enum EstadoProducto {
+  DISPONIBLE
+  A_PEDIDO
+  AGOTADO
+}
+
+model Producto {
+  id   String @id @default(cuid())
+  slug String @unique // "fueltech-ft450"
+
+  nombre      String
+  marca       String
+  categoria   CategoriaProducto
+  resumen     String // una línea para la tarjeta
+  descripcion String?
+
+  precio         Int? // CLP; null = "Consultar precio"
+  precioAnterior Int? // se muestra tachado
+
+  estado    EstadoProducto @default(DISPONIBLE)
+  destacado Boolean        @default(false) // sale en la portada
+  nuevo     Boolean        @default(false) // etiqueta "Nuevo"
+  orden     Int            @default(0)
+
+  // SEO opcional: si van vacíos, se generan desde el nombre y la categoría.
+  seoTitulo      String?
+  seoDescripcion String?
+  palabrasClave  String[] @default([])
+
+  imagenes ProductoImagen[]
+
+  creadoEn      DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+
+  @@index([categoria, estado])
+  @@index([destacado, orden])
+  @@map("productos")
+}
+
+model ProductoImagen {
+  id         String   @id @default(cuid())
+  producto   Producto @relation(fields: [productoId], references: [id], onDelete: Cascade)
+  productoId String
+  url        String
+  pathname   String? // pathname en Vercel Blob; null si es una foto de public/
+  orden      Int      @default(0)
+
+  @@index([productoId, orden])
+  @@map("producto_imagenes")
+}
+
+model AdminUser {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  nombre       String
+  passwordHash String
+  activo       Boolean   @default(true)
+  ultimoLogin  DateTime?
+  creadoEn     DateTime  @default(now())
+
+  @@map("admin_users")
+}
